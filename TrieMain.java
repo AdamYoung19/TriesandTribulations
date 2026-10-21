@@ -1,5 +1,6 @@
 package TriesandTribulations;
 
+import java.util.Scanner;
 
 
 class Node{
@@ -46,6 +47,7 @@ class Trie{
         root = null;
     }
 
+    //insert(word)
     public void insert(String word){
         //initialize root
         if (root == null){
@@ -73,6 +75,7 @@ class Trie{
 
     }
 
+    //search(word)
     public boolean search(String word){
 
         //check for empty trie
@@ -96,19 +99,59 @@ class Trie{
         return curr.isTerminal();
     }
 
-
+    //printAll()
     public void printAll(){
         //if enpty trie
         if (root == null) {System.out.println(); return;}
 
-        
+        //recursivley go through the trie and print all words avaiable
+        printHelper(root, "");
+        System.out.println();
 
 
 
 
     }
-    
-    
+
+    //printAllWords(prefix)
+
+    public void printAllWords(String prefix) {
+        //if empty trie
+        if (root == null){ System.out.println(); return; }
+
+        for (int i =0; i < prefix.length(); i++){
+            char c = prefix.charAt(i);
+            
+        }
+
+
+
+
+
+
+    }
+
+
+
+    //other methods
+
+    //helper function
+    private void printHelper(Node curr, String currWrd){
+        //if word is valid
+        if (curr.isTerminal()){
+            System.out.print("'" + currWrd + "', ");
+        }
+
+        //loop through all letters
+
+        for (int i = 0; i < Alpsize; i++){
+            
+            //if there's a child node that exist @ index
+            if (curr.getChildren()[i] != null){
+                printHelper(curr.getChildren()[i], currWrd + (char) i);
+            }
+        }
+    }
 
 }
 
