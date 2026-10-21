@@ -73,6 +73,40 @@ class Trie{
 
     }
 
+    public boolean search(String word){
+
+        //check for empty trie
+        if (root == null) return false;
+
+        Node curr = root;
+
+        // Go through every char
+        for (int i=0; i < word.length(); i++){
+            char c = word.charAt(i);
+
+            //if there's a dead end
+            if (c >= Alpsize || curr.getChildren()[c] == null){
+                return false;
+            }
+
+            //go to next node
+            curr = curr.getChildren()[c];
+        }
+
+        return curr.isTerminal();
+    }
+
+
+    public void printAll(){
+        //if enpty trie
+        if (root == null) {System.out.println(); return;}
+
+        
+
+
+
+
+    }
     
     
 
