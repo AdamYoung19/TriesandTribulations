@@ -1,6 +1,8 @@
 package TriesandTribulations;
 
 import java.util.Scanner;
+import java.util.HashSet;
+import java.util.ArrayList;
 
 
 class Node{
@@ -104,7 +106,7 @@ class Trie{
         //if enpty trie
         if (root == null) {System.out.println(); return;}
 
-        //recursivley go through the trie and print all words avaiable
+        //recursively go through the trie and print all words avaiable
         printHelper(root, "");
         System.out.println();
 
@@ -119,20 +121,24 @@ class Trie{
         //if empty trie
         if (root == null){ System.out.println(); return; }
 
+        Node curr = root;
+        //go to end of prefix
         for (int i =0; i < prefix.length(); i++){
             char c = prefix.charAt(i);
-            
+
+            // prefix path breaks early
+            if (c >= Alpsize || curr.getChildren()[c] == null){
+                System.out.println();
+                return;
+            }
+
+            curr = curr.getChildren()[c];
+
         }
 
-
-
-
-
+        printHelper(curr, prefix);
 
     }
-
-
-
     //other methods
 
     //helper function
@@ -159,6 +165,81 @@ class Trie{
 public class TrieMain {
 
     public static void main(String[] args){
+        //no args launcing code
+        if (args.length == 0){
+            System.out.println("Please use 'test' or 'memuse' for modes");
+            return;
+        }
+
+        //test
+        if (args[0].equals("test")){
+
+            Trie trie = new Trie();
+
+            //load trie with test words
+            String[] testWords = {"banana", "bandana", "bandaid", "bandage", "letter", "lettuce", "let", "tool", "toy", "toilet"};
+
+            //insert all test words into trie
+            for (String i : testWords){
+                trie.insert(i);
+            }
+
+            Scanner sc = new Scanner(System.in);
+
+            while (true) {
+                //Display menu
+                System.out.println("{add WORD}: Add a word");
+                System.out.println("{printAll}: Print all words");
+                System.out.println("{startswith PREFIX}: Print words that start with");
+                System.out.println("{search WORD}: Match a specific word");
+                System.out.println("{quit}: Quit");
+
+                System.out.println("? ");
+
+                //watch for case sensitive inputs
+                String input = sc.nextLine().trim();
+                String[] parts = input.split(" ");
+                String cmd = parts[0].toLowerCase();
+
+
+                //all user inputs
+                if (cmd.equals("quit")) break;
+                else if (cmd.equals("add") && parts.length > 1) trie.insert(parts[1]);
+                else if (cmd.equals("printall")) trie.printAll();
+                else if (cmd.equals("startswith") && parts.length > 1) trie.printAllWords(parts[1]);
+                else if (cmd.equals("search") && parts.length > 1){
+                    //2 cases
+                    //1. if found
+                    if (trie.search(parts[1])) System.out.print("word '" + parts[1] + "' was found in the trie");
+                    //2. not found
+                    else System.out.println("word '" + parts[1] + "' was  NOT found in the trie");
+                }
+
+                System.out.println("* press enter *");
+                sc.nextLine();
+
+
+                //clear terminal
+                System.out.print("\033[H\033[2J");
+                System.out.flush();
+
+
+
+
+
+            }
+        }
+
+
+
+
+
+
+        //memuse
+
+
+
+
         
         
     
