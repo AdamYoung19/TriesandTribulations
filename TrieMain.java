@@ -106,9 +106,12 @@ class Trie{
         //if enpty trie
         if (root == null) {System.out.println(); return;}
 
+
+        System.out.print("All words: ");
         //recursively go through the trie and print all words avaiable
         printHelper(root, "");
         System.out.println();
+
 
 
 
@@ -194,7 +197,7 @@ public class TrieMain {
                 System.out.println("{search WORD}: Match a specific word");
                 System.out.println("{quit}: Quit");
 
-                System.out.println("? ");
+                System.out.print("? ");
 
                 //watch for case sensitive inputs
                 String input = sc.nextLine().trim();
@@ -206,15 +209,19 @@ public class TrieMain {
                 if (cmd.equals("quit")) break;
                 else if (cmd.equals("add") && parts.length > 1) trie.insert(parts[1]);
                 else if (cmd.equals("printall")) trie.printAll();
-                else if (cmd.equals("startswith") && parts.length > 1) trie.printAllWords(parts[1]);
+                else if (cmd.equals("startswith") && parts.length > 1) {
+                    System.out.print("All words that starts with '" + parts[1] + "': ");
+                    trie.printAllWords(parts[1]); 
+                    System.out.println();}
                 else if (cmd.equals("search") && parts.length > 1){
                     //2 cases
                     //1. if found
-                    if (trie.search(parts[1])) System.out.print("word '" + parts[1] + "' was found in the trie");
+                    if (trie.search(parts[1])) System.out.println("word '" + parts[1] + "' was found in the trie");
                     //2. not found
                     else System.out.println("word '" + parts[1] + "' was  NOT found in the trie");
                 }
 
+                System.out.println();
                 System.out.println("* press enter *");
                 sc.nextLine();
 
@@ -228,7 +235,11 @@ public class TrieMain {
 
 
             }
+            sc.close();
         }
+
+        
+
 
 
 
@@ -238,7 +249,39 @@ public class TrieMain {
         //memuse
 
 
+        else if (args[0].equals("memuse")){
+            Scanner sc = new Scanner(System.in);
+            ArrayList<String> fileWords = new ArrayList<>();
 
+                //Read all words from the dictionary file into list
+            while (sc.hasNext()){
+                fileWords.add(sc.next());
+            }
+            sc.close();
+
+            // Display graph
+            Display.setYMax(900);
+            Display.setYInc(15);
+
+            Runtime rt = Runtime.getRuntime();
+            long heapMemoryInBytes;
+
+
+            // every iteration as more words are added to trie
+
+            Trie trie = new Trie();
+            int wordCount = 0;
+
+            for (String w : fileWords){
+                trie.insert(w);
+                wordCount++;
+                heapMemoryInBytes = rt.totalMemory() - rt.freeMemory();
+
+                Display.show(hashSet, heapMemoryInBytes, wordCount);
+            }
+
+
+        }
 
         
         
